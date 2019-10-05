@@ -1,7 +1,7 @@
 include MakefileDocumentation
 
 run: ##@application Starts API Locally
-	./mvnw clean package && docker-compose up -d local-api db
+	./mvnw clean package && docker-compose up --build
 
 stop: ##@application Stop all containers.
 	docker-compose down
