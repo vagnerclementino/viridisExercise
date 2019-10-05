@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   local-api:
-    build: .
+    image: "exercise_local-api:latest"
     environment:
       POSTGRES_USER: viridis
       POSTGRES_PASSWORD: HIfyh2wQf9(9
