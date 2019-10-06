@@ -6,7 +6,6 @@ import energy.viridis.exercise.model.Equipment;
 import energy.viridis.exercise.repository.EquipmentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -22,8 +21,6 @@ class EquipmentServiceImplTest {
     private EquipmentRepository mockEquipmentRepoitory;
     @Mock
     private EquipmentDto mockBody;
-    @Mock
-    private Equipment mockEquipment;
 
 
     @BeforeEach
@@ -32,7 +29,6 @@ class EquipmentServiceImplTest {
         mockEquipmentRepoitory = mock(EquipmentRepository.class);
         equipmentService = new EquipmentServiceImpl(mockEquipmentRepoitory);
         mockBody = mock(EquipmentDto.class);
-        mockEquipment = mock(Equipment.class);
 
     }
 

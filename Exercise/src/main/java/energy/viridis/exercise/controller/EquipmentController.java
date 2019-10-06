@@ -1,6 +1,7 @@
 package energy.viridis.exercise.controller;
 
 import energy.viridis.exercise.dto.EquipmentDto;
+import energy.viridis.exercise.error.ExerciseException;
 import energy.viridis.exercise.model.Equipment;
 import energy.viridis.exercise.service.EquipmentService;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/equipment")
@@ -51,6 +53,7 @@ public class EquipmentController {
 			    )
 	public ResponseEntity<Equipment> saveEquipment(@Valid @RequestBody EquipmentDto body) {
 
+		validate(body);
 	    Equipment savedEquipment = equipmentService.saveEquipment(body);
         URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{id}")
@@ -64,6 +67,7 @@ public class EquipmentController {
 	public ResponseEntity<Equipment> updateEquipment(@PathVariable(value = "id",
                                                                    required = true) Long id,
 													 @Valid @RequestBody EquipmentDto body) {
+		validate(body);
 	    equipmentService.updateEquipment(id, body);
         return ResponseEntity.noContent().build();
 	}
@@ -73,4 +77,9 @@ public class EquipmentController {
         equipmentService.removeEquipment(id);
         return ResponseEntity.noContent().build();
     }
+	private void validate(EquipmentDto body) throws ExerciseException {
+		if (Objects.isNull(body.getName())){
+			throw new ExerciseException("Equipment name cannot be null");
+		}
+	}
 }

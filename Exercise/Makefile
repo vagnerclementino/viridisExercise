@@ -13,7 +13,7 @@ container: ##@helpers Do a docker exec bash inside container.
 	docker exec -it viridis_api /bin/sh
 
 test: ##@tests Run all tests
-	./mvnw clean test
+	./mvnw clean test -Dspring.profiles.active=test
 
 psql: ##@helpers Start a postgres client
 	docker exec -it viridis_db /bin/bash -c 'psql exercise viridis'
