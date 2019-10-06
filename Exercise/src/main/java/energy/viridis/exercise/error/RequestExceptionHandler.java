@@ -32,4 +32,12 @@ public class RequestExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body("Unfilled field(s): " + ex.getConstraintViolations().stream().map(constraint -> constraint.getPropertyPath().toString()).collect(Collectors.joining(", ")) + ".");
 	}
+
+	@ExceptionHandler({ ExerciseException.class })
+	public ResponseEntity<Object> exerciseExceptionHanlder(ExerciseException ex) {
+
+		log.info(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+
+	}
 }
