@@ -9,13 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Path;
-import javax.validation.metadata.ConstraintDescriptor;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -66,7 +62,9 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	private Equipment findEquipmentByIdOrElseThrowNotFound(Long id) {
-		if (id <= Long.valueOf(0)) throw new ExerciseException("Equipment id is not valid");
+		if ( Objects.isNull(id) || id <= Long.valueOf(0)){
+			throw new ExerciseException("Equipment id is not valid");
+		}
 		return equipmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Equipment not found."));
 	}
 }
