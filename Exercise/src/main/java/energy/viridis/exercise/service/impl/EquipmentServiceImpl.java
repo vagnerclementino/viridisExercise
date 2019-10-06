@@ -1,37 +1,72 @@
 package energy.viridis.exercise.service.impl;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import energy.viridis.exercise.dto.EquipmentDto;
+import energy.viridis.exercise.error.ExerciseException;
 import energy.viridis.exercise.model.Equipment;
 import energy.viridis.exercise.repository.EquipmentRepository;
 import energy.viridis.exercise.service.EquipmentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
+import javax.validation.metadata.ConstraintDescriptor;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
 
-	@Autowired
 	private EquipmentRepository equipmentRepository;
 
+	@Autowired
+	public EquipmentServiceImpl(EquipmentRepository equipmentRepository) {
+		this.equipmentRepository = equipmentRepository;
+	}
+
 	@Override
-	public Equipment get(Long id) {
+	public Equipment getEquipmentById(Long id) {
 
 		log.info("Retrieving Equipment - id: {}", id);
-		return equipmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Equipment not found."));
+		return findEquipmentByIdOrElseThrowNotFound(id);
 
 	}
 
 	@Override
-	public List<Equipment> getAll() {
+	public List<Equipment> getAllEquipments() {
 
 		log.info("Listing all Equipment");
 		return equipmentRepository.findAll();
 
 	}
 
+	@Override
+	public Equipment saveEquipment(EquipmentDto body) {
+		Equipment equipmentToSave = new Equipment().withName(body.getName());
+		return equipmentRepository.save(equipmentToSave);
+	}
+
+	@Override
+	public Equipment updateEquipment(Long id, EquipmentDto body) {
+
+		Equipment equipmentToSave = findEquipmentByIdOrElseThrowNotFound(id);
+		equipmentToSave.setName(body.getName());
+        return equipmentRepository.save(equipmentToSave);
+	}
+
+	@Override
+	public void removeEquipment(Long id) {
+
+		Equipment equipmentToRemove = findEquipmentByIdOrElseThrowNotFound(id);
+		equipmentRepository.deleteById(equipmentToRemove.getId());
+	}
+
+	private Equipment findEquipmentByIdOrElseThrowNotFound(Long id) {
+		if (id <= Long.valueOf(0)) throw new ExerciseException("Equipment id is not valid");
+		return equipmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Equipment not found."));
+	}
 }
