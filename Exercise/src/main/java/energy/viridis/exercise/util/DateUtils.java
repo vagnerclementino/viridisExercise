@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtils {
@@ -57,6 +58,13 @@ public final class DateUtils {
 
 	public static LocalDateTime dateToLocalDateTime(Date date) {
 		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	}
+
+	public static Date addHoursToUtilDate(Date date, int hours) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR_OF_DAY, hours);
+		return calendar.getTime();
 	}
 
 }
