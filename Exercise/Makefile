@@ -1,7 +1,7 @@
 include MakefileDocumentation
 
 run: ##@application Starts API Locally
-	./mvnw clean package && docker-compose up --build
+	./mvnw clean package -DskipTests && docker-compose up --build
 
 stop: ##@application Stop all containers.
 	docker-compose down
@@ -12,8 +12,8 @@ build: ##@application Creates docker containers.
 container: ##@helpers Do a docker exec bash inside container.
 	docker exec -it viridis_api /bin/sh
 
-tests: ##@tests Run all tests
-	./mvnw clean package && docker-compose up -d local-api db
+test: ##@tests Run all tests
+	./mvnw clean test
 
 psql: ##@helpers Start a postgres client
 	docker exec -it viridis_db /bin/bash -c 'psql exercise viridis'
