@@ -21,8 +21,6 @@ class EquipmentServiceImplTest {
     private EquipmentRepository mockEquipmentRepoitory;
     @Mock
     private EquipmentDto mockBody;
-    @Mock
-    private Equipment mockEquipment;
 
 
     @BeforeEach
@@ -31,7 +29,6 @@ class EquipmentServiceImplTest {
         mockEquipmentRepoitory = mock(EquipmentRepository.class);
         equipmentService = new EquipmentServiceImpl(mockEquipmentRepoitory);
         mockBody = mock(EquipmentDto.class);
-        mockEquipment = mock(Equipment.class);
 
     }
 

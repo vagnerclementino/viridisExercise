@@ -40,6 +40,8 @@ class DateUtilsTest {
     private static final LocalDate LOCAL_DATE = LocalDate.of(YEAR, MONTH, DAY);
 
     private static final String DATE_STRING = String.format("%s-%02d-%02d", YEAR, MONTH, DAY);
+    private static final String DEFAULT_DATE_STRING = String.format("%s-%02d-%02d %02d:%02d", DAY, MONTH, YEAR, HOUR, MINUTE );
+
     private static final String DATE_STRING_NULL = null;
     private static final String DATE_STRING_EMPTY = "";
     private static final String DATE_STRING_INVALID = "xxxx-xx-xx";
@@ -52,6 +54,18 @@ class DateUtilsTest {
         assertEquals(YEAR, localDate.getYear());
         assertEquals(MONTH, localDate.getMonthValue());
         assertEquals(DAY, localDate.getDayOfMonth());
+    }
+
+    @Test
+    public void shouldStringToDefultDateWithDateFillAndPatternValidSuccess() {
+        Date date = DateUtils.stringToDefaultDate(DEFAULT_DATE_STRING);
+        assertThat(date, is(notNullValue()));
+        LocalDateTime localDateTime = DateUtils.dateToLocalDateTime(date);
+        assertEquals(YEAR, localDateTime.getYear());
+        assertEquals(MONTH, localDateTime.getMonthValue());
+        assertEquals(DAY, localDateTime.getDayOfMonth());
+        assertEquals(HOUR, localDateTime.getHour());
+        assertEquals(MINUTE, localDateTime.getMinute());
     }
 
     @Test

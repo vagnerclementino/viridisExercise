@@ -55,4 +55,8 @@ public final class DateUtils {
 		return localTimeToDate(LocalDateTime.now());
 	}
 
+	public static LocalDateTime dateToLocalDateTime(Date date) {
+		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	}
+
 }
