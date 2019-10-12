@@ -23,6 +23,7 @@ services:
       POSTGRES_USER: viridis
       POSTGRES_PASSWORD: HIfyh2wQf9(9
       POSTGRES_DB: exercise
+      JWT_SECRET: 0OE0IBGOsbKAIrfHAL0Y4G2ily2QUpw5iF/EjF8kKbqG48kmeWKD2Qg3RALlp8sSuVQ2K0dc/bgQjG3BnoxQjcu22QomFqHaYkTOne1NAA8dWYCn47AsfG9sUmvyzClR4Goa9ZcZaB1jN0vtXujclNnBw07XvjRstULpvCEAtOBKJjq5AiramGu1qEuhDvmVyJUD48Dgg9LPKhFTUE4051YsgC6hFOyZ/m4YOQ==%
     network_mode: bridge
     container_name: viridis_api
     expose:
