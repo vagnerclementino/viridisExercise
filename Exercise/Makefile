@@ -17,3 +17,6 @@ test: ##@tests Run all tests
 
 psql: ##@helpers Start a postgres client
 	docker exec -it viridis_db /bin/bash -c 'psql exercise viridis'
+
+pmd: ##@helpers Run a code analysis
+	./mvnw pmd:pmd pmd:cpd pmd:check pmd:cpd-check
