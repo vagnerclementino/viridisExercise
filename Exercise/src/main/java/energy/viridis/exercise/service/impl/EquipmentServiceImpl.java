@@ -67,10 +67,4 @@ public class EquipmentServiceImpl implements EquipmentService {
 		}
 		return equipmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Equipment not found."));
 	}
-
-	private void validate(EquipmentDto body) throws  ExerciseException{
-		if (Objects.isNull(body.getName())){
-			throw new ExerciseException("Equipment name cannot be null");
-		}
-	}
 }
