@@ -7,6 +7,8 @@ import energy.viridis.exercise.repository.EquipmentRepository;
 import energy.viridis.exercise.service.EquipmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.Objects;
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
 
-	private EquipmentRepository equipmentRepository;
+	private final EquipmentRepository equipmentRepository;
 
 	@Autowired
 	public EquipmentServiceImpl(EquipmentRepository equipmentRepository) {
@@ -25,6 +27,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
+	@Cacheable("equipments")
 	public Equipment getEquipmentById(Long id) {
 
 		log.info("Retrieving Equipment - id: {}", id);
@@ -33,6 +36,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
+	@Cacheable("equipments")
 	public List<Equipment> getAllEquipments() {
 
 		log.info("Listing all Equipment");
@@ -41,12 +45,14 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
+	@CachePut("equipments")
 	public Equipment saveEquipment(EquipmentDto body) {
 		Equipment equipmentToSave = new Equipment().withName(body.getName());
 		return equipmentRepository.save(equipmentToSave);
 	}
 
 	@Override
+	@CachePut("equipments")
 	public Equipment updateEquipment(Long id, EquipmentDto body) {
 
 		Equipment equipmentToSave = findEquipmentByIdOrElseThrowNotFound(id);
@@ -55,6 +61,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
+	@CachePut("equipments")
 	public void removeEquipment(Long id) {
 
 		Equipment equipmentToRemove = findEquipmentByIdOrElseThrowNotFound(id);
