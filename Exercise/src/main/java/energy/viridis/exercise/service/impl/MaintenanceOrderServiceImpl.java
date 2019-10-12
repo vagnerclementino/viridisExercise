@@ -11,6 +11,8 @@ import energy.viridis.exercise.util.DateUtils;
 import energy.viridis.exercise.error.ExerciseException;
 import energy.viridis.exercise.model.MaintenanceOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import energy.viridis.exercise.repository.MaintenanceOrderRepository;
@@ -21,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 
-	private MaintenanceOrderRepository maintenanceOrderRepository;
-	private EquipmentService equipmentService;
+	private final MaintenanceOrderRepository maintenanceOrderRepository;
+	private final EquipmentService equipmentService;
 
 	@Autowired
 	public MaintenanceOrderServiceImpl(MaintenanceOrderRepository maintenanceOrderRepository, EquipmentService equipmentService) {
@@ -31,6 +33,7 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 	}
 
 	@Override
+	@Cacheable("maintenanceOrder")
 	public MaintenanceOrder getMaintenanceOrderById(Long id) {
 
 		log.info("Retrieving Maintenance Order - id: {}", id);
@@ -39,6 +42,7 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 	}
 
 	@Override
+	@CachePut("maintenanceOrder")
 	public List<MaintenanceOrder> getMaintenanceOrderList() {
 
 		log.info("Listing all Maintenance Orders...");
@@ -48,6 +52,7 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 
 
 	@Override
+	@CachePut("maintenanceOrder")
 	public MaintenanceOrder saveMaintenanceOrder(MaintenanceOrderDto body) {
 		MaintenanceOrder maintenanceOrderToSave = new MaintenanceOrder();
 		Equipment equipmentSaved = findEquipmentById(body.getEquipmentDto().getId());
@@ -58,6 +63,7 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 	}
 
 	@Override
+	@CachePut("maintenanceOrder")
 	public MaintenanceOrder updateMaintenanceOrder(Long id, MaintenanceOrderDto body) {
 
 		MaintenanceOrder maintenanceOrderToSave = findMaintenanceOrderByIdOrElseThrowNotFound(id);
@@ -75,6 +81,7 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 	}
 
 	@Override
+	@CachePut("maintenanceOrder")
 	public void removeMaintenanceOrder(Long id) {
 
 		MaintenanceOrder MaintenanceOrderToRemove = findMaintenanceOrderByIdOrElseThrowNotFound(id);
