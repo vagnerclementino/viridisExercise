@@ -4,12 +4,11 @@ import energy.viridis.exercise.dto.EquipmentDto;
 import energy.viridis.exercise.error.ExerciseException;
 import energy.viridis.exercise.model.Equipment;
 import energy.viridis.exercise.service.EquipmentService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -18,8 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/equipment")
-public class EquipmentController {
+public class EquipmentController implements EquipmentApi {
 
 	private final EquipmentService equipmentService;
 
@@ -28,29 +26,17 @@ public class EquipmentController {
 		this.equipmentService = equipmentService;
 	}
 
-	@GetMapping
+	@Override
 	public ResponseEntity<List<Equipment>> getAllEquipments() {
 		return ResponseEntity.ok().body(equipmentService.getAllEquipments());
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Equipment> get(@PathVariable(value = "id", required = true) Long id) {
+	@Override
+	public ResponseEntity<Equipment> getEquipmentById(@PathVariable(value = "id", required = true) Long id) {
 		return ResponseEntity.ok().body(equipmentService.getEquipmentById(id));
 	}
 
-	//TODO Revisar
-	@ApiOperation(value = "Adiciona um novo carro",
-			      nickname = "adicionaCarro",
-			      notes = "Inclui um novo carro retornando a URI de acesso ao recurso",
-				  response = ResponseEntity.class,
-			      tags={ "Carros", })
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "Carro adicionado com sucesso", response = ResponseEntity.class),
-			@ApiResponse(code = 405, message = "Entrada inválida"),
-			@ApiResponse(code = 500, message = "Erro interno") })
-	@PostMapping(produces = { "application/json" },
-			    consumes = { "application/json" }
-			    )
+	@Override
 	public ResponseEntity<Equipment> saveEquipment(@Valid @RequestBody EquipmentDto body) {
 
 		validate(body);
@@ -63,20 +49,20 @@ public class EquipmentController {
         return ResponseEntity.created(location).build();
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Equipment> updateEquipment(@PathVariable(value = "id",
-                                                                   required = true) Long id,
+	@Override
+	public ResponseEntity<Equipment> updateEquipment(@PathVariable(value = "id", required = true) Long id,
 													 @Valid @RequestBody EquipmentDto body) {
 		validate(body);
 	    equipmentService.updateEquipment(id, body);
         return ResponseEntity.noContent().build();
 	}
 
-	@DeleteMapping("/{id}")
+	@Override
 	public ResponseEntity<Equipment> removeEquipment(@PathVariable("id") Long id) {
         equipmentService.removeEquipment(id);
         return ResponseEntity.noContent().build();
     }
+
 	private void validate(EquipmentDto body) throws ExerciseException {
 		if (Objects.isNull(body.getName())){
 			throw new ExerciseException("Equipment name cannot be null");
