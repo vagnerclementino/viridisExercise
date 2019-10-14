@@ -1,6 +1,7 @@
 package energy.viridis.exercise.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.AuditTable;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Audited
