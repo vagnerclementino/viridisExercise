@@ -44,6 +44,19 @@ class MaintenanceOrderRepositoryTest {
     }
 
 
+    @Test
+    public void shouldFindBScheduledDateAndEquipment() throws Exception {
+        MaintenanceOrder testMaintenanceOrder = builMaintenanceOrderToTest();
+        MaintenanceOrder maybeSavedMaintenanceOrder =   subject.save(testMaintenanceOrder);
+
+        Optional<MaintenanceOrder> fetchMaintenanceOrder = subject
+                                                            .findByScheduledDateAndEquipment(maybeSavedMaintenanceOrder.getScheduledDate(),
+                                                                                             maybeSavedMaintenanceOrder.getEquipment());
+
+        assertThat(fetchMaintenanceOrder, is(Optional.of(testMaintenanceOrder)));
+    }
+
+
 
     @Test
     public void shouldUpdateAndFetchEquipmentWithNewName() throws Exception {
