@@ -68,10 +68,22 @@ public class EquipmentServiceImpl implements EquipmentService {
 		equipmentRepository.deleteById(equipmentToRemove.getId());
 	}
 
+	@Override
+	public Equipment getEquipmentByName(String name) {
+		return findEquipmentByNameElseThrowNotFound(name);
+	}
+
 	private Equipment findEquipmentByIdOrElseThrowNotFound(Long id) {
 		if ( Objects.isNull(id) || id <= Long.valueOf(0)){
 			throw new ExerciseException("Equipment id is not valid");
 		}
 		return equipmentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Equipment not found."));
+	}
+
+	private Equipment findEquipmentByNameElseThrowNotFound(String name) {
+		if ( Objects.isNull(name)){
+			throw new ExerciseException("Equipment name cannot be null");
+		}
+		return equipmentRepository.findByName(name).orElseThrow(() -> new NoSuchElementException("Equipment not found."));
 	}
 }

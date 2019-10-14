@@ -1,23 +1,24 @@
 package energy.viridis.exercise.service.impl;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
+import energy.viridis.exercise.dto.EquipmentDto;
 import energy.viridis.exercise.dto.MaintenanceOrderDto;
-import energy.viridis.exercise.model.Equipment;
-import energy.viridis.exercise.repository.EquipmentRepository;
-import energy.viridis.exercise.service.EquipmentService;
-import energy.viridis.exercise.util.DateUtils;
 import energy.viridis.exercise.error.ExerciseException;
+import energy.viridis.exercise.model.Equipment;
 import energy.viridis.exercise.model.MaintenanceOrder;
+import energy.viridis.exercise.repository.MaintenanceOrderRepository;
+import energy.viridis.exercise.service.EquipmentService;
+import energy.viridis.exercise.service.MaintenanceOrderService;
+import energy.viridis.exercise.util.DateUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import energy.viridis.exercise.repository.MaintenanceOrderRepository;
-import energy.viridis.exercise.service.MaintenanceOrderService;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -55,9 +56,9 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 	@CachePut("maintenanceOrder")
 	public MaintenanceOrder saveMaintenanceOrder(MaintenanceOrderDto body) {
 		MaintenanceOrder maintenanceOrderToSave = new MaintenanceOrder();
-		Equipment equipmentSaved = findEquipmentById(body.getEquipmentDto().getId());
+		Optional<Equipment> equipmentSaved = findEquipment(body.getEquipmentDto());
 		return maintenanceOrderRepository.save(prepareMaintenanceOrderToSave(maintenanceOrderToSave,
-																			 equipmentSaved,
+																			 equipmentSaved.get(),
 																			 body.getScheduledDate())
 																			 );
 	}
@@ -67,16 +68,11 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 	public MaintenanceOrder updateMaintenanceOrder(Long id, MaintenanceOrderDto body) {
 
 		MaintenanceOrder maintenanceOrderToSave = findMaintenanceOrderByIdOrElseThrowNotFound(id);
-		Equipment equipmentToUpdate;
 
-		if(body.getEquipmentDto().getId() != maintenanceOrderToSave.getEquipment().getId()){
-			equipmentToUpdate = findEquipmentById(body.getEquipmentDto().getId());
-			maintenanceOrderToSave.setEquipment(equipmentToUpdate);
-		}else{
-			 equipmentToUpdate = maintenanceOrderToSave.getEquipment();
-		}
+		Optional<Equipment> equipmentOptionalToUpdate = findEquipment(body.getEquipmentDto());
+
 		return maintenanceOrderRepository.save(prepareMaintenanceOrderToSave(maintenanceOrderToSave,
-																			 equipmentToUpdate,
+																			 equipmentOptionalToUpdate.get(),
 																			 body.getScheduledDate()));
 	}
 
@@ -93,8 +89,14 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 		return  maintenanceOrderRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Maintenance Order not found."));
 	}
 
-	private Equipment findEquipmentById(Long id) {
-		return equipmentService.getEquipmentById(id);
+	private Optional<Equipment> findEquipment(EquipmentDto dto) {
+		if(!Objects.isNull(dto.getId())){
+			return Optional.ofNullable(equipmentService.getEquipmentById(dto.getId()));
+		}
+		if(!Objects.isNull(dto.getName())){
+			return Optional.ofNullable(equipmentService.getEquipmentByName(dto.getName()));
+		}
+		return Optional.empty();
 	}
 
 	private MaintenanceOrder prepareMaintenanceOrderToSave(MaintenanceOrder maintenanceOrderToSave, Equipment equipment, String scheduledData){
