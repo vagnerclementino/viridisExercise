@@ -16,4 +16,6 @@ public interface EquipmentService {
 	Equipment updateEquipment(Long id, EquipmentDto body);
 
 	void removeEquipment(Long id);
+
+    Equipment getEquipmentByName(String name);
 }
