@@ -56,7 +56,7 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 	@CachePut("maintenanceOrder")
 	public MaintenanceOrder saveMaintenanceOrder(MaintenanceOrderDto body) {
 		MaintenanceOrder maintenanceOrderToSave = new MaintenanceOrder();
-		Optional<Equipment> equipmentSaved = findEquipment(body.getEquipmentDto());
+		Optional<Equipment> equipmentSaved = findEquipment(body.getEquipment());
 		return maintenanceOrderRepository.save(prepareMaintenanceOrderToSave(maintenanceOrderToSave,
 																			 equipmentSaved.get(),
 																			 body.getScheduledDate())
@@ -69,7 +69,7 @@ public class MaintenanceOrderServiceImpl implements MaintenanceOrderService {
 
 		MaintenanceOrder maintenanceOrderToSave = findMaintenanceOrderByIdOrElseThrowNotFound(id);
 
-		Optional<Equipment> equipmentOptionalToUpdate = findEquipment(body.getEquipmentDto());
+		Optional<Equipment> equipmentOptionalToUpdate = findEquipment(body.getEquipment());
 
 		return maintenanceOrderRepository.save(prepareMaintenanceOrderToSave(maintenanceOrderToSave,
 																			 equipmentOptionalToUpdate.get(),

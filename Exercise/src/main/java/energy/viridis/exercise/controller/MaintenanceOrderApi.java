@@ -91,9 +91,7 @@ public interface MaintenanceOrderApi {
             @ApiResponse(code = 204, message = "Maintenance order created with success", response = ResponseEntity.class),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Error") })
-    @DeleteMapping(value="/{id}", produces = { "application/json" },
-            consumes = { "application/json" }
-    )
+    @DeleteMapping(value="/{id}", produces = { "application/json" })
     default  ResponseEntity<MaintenanceOrder> removeMaintenanceOrder(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }

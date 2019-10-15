@@ -66,7 +66,7 @@ class MaintenanceOrderServiceImplTest {
     void shouldSaveMaintenanceOrderCallRepositorySave() {
         Long equipmentId = Long.valueOf(99);
 
-        when(mockBody.getEquipmentDto()).thenReturn(mockEquipmentDto);
+        when(mockBody.getEquipment()).thenReturn(mockEquipmentDto);
         when(mockEquipmentDto.getId()).thenReturn(equipmentId);
         when(mockEquipmentServide.getEquipmentById(equipmentId)).thenReturn(mockEquipment);
 
