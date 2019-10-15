@@ -9,7 +9,7 @@ import lombok.NonNull;
 public class MaintenanceOrderDto {
 
     @NonNull
-    EquipmentDto equipmentDto;
+    EquipmentDto equipment;
 
     @NonNull
     String scheduledDate;
