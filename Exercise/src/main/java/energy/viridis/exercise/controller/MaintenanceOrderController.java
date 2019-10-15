@@ -65,7 +65,7 @@ public class MaintenanceOrderController implements MaintenanceOrderApi {
 	}
 
 	private void validateRequest(MaintenanceOrderDto body){
-		if(Objects.isNull(body.getEquipmentDto().getId()) && Objects.isNull(body.getEquipmentDto().getName())){
+		if(Objects.isNull(body.getEquipment().getId()) && Objects.isNull(body.getEquipment().getName())){
 			throw new ExerciseException("Equipment name and id cannot be null");
 		}
 	}
