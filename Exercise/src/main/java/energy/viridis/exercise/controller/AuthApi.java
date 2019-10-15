@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Api(value = "equipments", description = "the Auth API")
+@Api(value = "Auth", description = "the Auth API")
 @RequestMapping("api/auth")
 public interface AuthApi {
 
