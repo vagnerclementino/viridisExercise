@@ -7,7 +7,7 @@ import energy.viridis.exercise.repository.EquipmentRepository;
 import energy.viridis.exercise.service.EquipmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -45,14 +45,14 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
-	@CachePut("equipments")
+	@CacheEvict(value = "equipments", allEntries = true)
 	public Equipment saveEquipment(EquipmentDto body) {
 		Equipment equipmentToSave = new Equipment().withName(body.getName());
 		return equipmentRepository.save(equipmentToSave);
 	}
 
 	@Override
-	@CachePut("equipments")
+	@CacheEvict(value = "equipments", allEntries = true)
 	public Equipment updateEquipment(Long id, EquipmentDto body) {
 
 		Equipment equipmentToSave = findEquipmentByIdOrElseThrowNotFound(id);
@@ -61,7 +61,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
-	@CachePut("equipments")
+	@CacheEvict(value = "equipments", allEntries = true)
 	public void removeEquipment(Long id) {
 
 		Equipment equipmentToRemove = findEquipmentByIdOrElseThrowNotFound(id);
