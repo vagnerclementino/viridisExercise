@@ -26,3 +26,48 @@ The produced code should be public on Github and you should send us the link to 
 The quality of the code produced in terms of organization, documentation, and readability. Your skills of finding information on your own, solving problems, and communicating well your solution also counts!
 
 **Good job!**
+
+## Solution
+
+For to execute this project you need *Docker* and *Docker Compose*. After this, 
+you must run the following command:
+
+```bash
+ $ cd Exercise
+ $ make run
+```
+
+For run tests you must execute:
+
+```bash
+ $ make test
+```
+
+For more commands,  execute:
+
+```bash
+ $ make help
+```
+
+## Get JWT Token
+
+For tests propuses you could get a token running this command:
+
+```bash
+curl -X POST \
+  http://localhost:8080/api/auth/signin \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    	"username": "exercise",
+    	"password": "viridis"
+    }'
+```
+
+You should receive the following response:
+
+```json
+{"username":"exercise","token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGVyY2lzZSIsInJvbGVzIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwiaWF0IjoxNTcxMTkxODQzLCJleHAiOjE1NzEyNzgyNDN9.RCLMlMT_zqtA3J820GrJcwOZ2NwcgVS2ytBsGiGYXXo"
+}
+````
+
